@@ -11,9 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ddp.Data", "Ddp.Data\Ddp.Da
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Testapp", "Testapp\Testapp.csproj", "{7B1023BA-20D3-4860-85CC-DAD32C4ABD34}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ddp.Domain.Services", "Ddp.Domain.Services\Ddp.Domain.Services.csproj", "{AC5D17F4-476C-4F1D-983A-A62E92782342}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ddp.Domain.Services", "Ddp.Domain.Services\Ddp.Domain.Services.csproj", "{AC5D17F4-476C-4F1D-983A-A62E92782342}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ddp.Data.SqlServer", "Ddp.Data.SqlServer\Ddp.Data.SqlServer.csproj", "{0BFC5122-F215-45D8-B5F1-7F0EDEEB9BF5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ddp.Data.Ef", "Ddp.Data.SqlServer\Ddp.Data.Ef.csproj", "{0BFC5122-F215-45D8-B5F1-7F0EDEEB9BF5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

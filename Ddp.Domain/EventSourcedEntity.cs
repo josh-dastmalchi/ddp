@@ -46,5 +46,6 @@ namespace Ddp.Domain
             _mutatingEvents.Add(e);
             DoWhen(e);
         }
+        
     }
 }

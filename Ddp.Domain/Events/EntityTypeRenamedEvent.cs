@@ -11,6 +11,6 @@ namespace Ddp.Domain.Events
         }
 
         public string Name { get; }
-        public Guid EventId { get; set; }
+        public Guid EventId { get; }
     }
 }

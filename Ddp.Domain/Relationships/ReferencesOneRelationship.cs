@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Ddp.Domain
+﻿namespace Ddp.Domain.Relationships
 {
     public class ReferencesOneRelationship
     {

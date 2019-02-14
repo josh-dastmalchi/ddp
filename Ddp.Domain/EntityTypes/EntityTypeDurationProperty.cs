@@ -1,13 +1,13 @@
-﻿using Ddp.Domain.PropertyTypes;
-using System;
+﻿using System;
+using Ddp.Domain.PropertyTypes;
 
 namespace Ddp.Domain.EntityTypes
 {
-    public class EntityTypeTextProperty : EventSourcedEntity
+    public class EntityTypeDurationProperty : EventSourcedEntity
     {
         public Guid EntityTypeDatePropertyId { get; set; }
         public Guid EntityTypeId { get; set; }
-        public TextProperty TextProperty { get; set; }
+        public DurationProperty DurationProperty { get; set; }
         public int? MaximumAllowed { get; set; }
     }
 }

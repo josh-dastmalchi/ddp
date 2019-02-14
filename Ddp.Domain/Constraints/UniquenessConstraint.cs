@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Ddp.Domain
+namespace Ddp.Domain.Constraints
 {
     public class UniquenessConstraint
     {
