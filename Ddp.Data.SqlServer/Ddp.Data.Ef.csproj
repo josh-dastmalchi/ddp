@@ -13,8 +13,4 @@
     <ProjectReference Include="..\Ddp.Data\Ddp.Data.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Repositories\" />
-  </ItemGroup>
-
 </Project>

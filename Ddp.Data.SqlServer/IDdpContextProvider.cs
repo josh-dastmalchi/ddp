@@ -2,7 +2,7 @@
 
 namespace Ddp.Data.Ef
 {
-    public interface IContextProvider
+    public interface IDdpContextProvider
     {
         Task<DdpContext> Get();
     }

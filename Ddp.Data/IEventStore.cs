@@ -1,18 +1,23 @@
-﻿using Ddp.Domain;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Ddp.Domain;
 
 namespace Ddp.Data
 {
     public interface IEventStore
     {
-        Task<List<IDomainEvent>> GetEventsFor<T>(Guid entityId, int? version = null);
-        Task<List<IDomainEvent>> GetEventsFor<T>(int entityId, int? version = null);
-        Task<List<IDomainEvent>> GetEventsFor<T>(string entityId, int? version = null);
+        Task<EventStream> GetEventStreamFor<T>(Guid entityId, int? version = null) where T : EventSourcedEntity;
+        Task<EventStream> GetEventStreamFor<T>(int entityId, int? version = null) where T : EventSourcedEntity;
+        Task<EventStream> GetEventStreamFor<T>(string entityId, int? version = null) where T : EventSourcedEntity;
 
-        Task StoreEventsFor<T>(Guid entityId, int baseVersion, IEnumerable<IDomainEvent> domainEvents);
-        Task StoreEventsFor<T>(int entityId, int baseVersion, IEnumerable<IDomainEvent> domainEvents);
-        Task StoreEventsFor<T>(string entityId, int baseVersion, IEnumerable<IDomainEvent> domainEvents);
+        Task StoreEventsFor<T>(Guid entityId, int baseVersion, IEnumerable<IDomainEvent> domainEvents)
+            where T : EventSourcedEntity;
+
+        Task StoreEventsFor<T>(int entityId, int baseVersion, IEnumerable<IDomainEvent> domainEvents)
+            where T : EventSourcedEntity;
+
+        Task StoreEventsFor<T>(string entityId, int baseVersion, IEnumerable<IDomainEvent> domainEvents)
+            where T : EventSourcedEntity;
     }
 }

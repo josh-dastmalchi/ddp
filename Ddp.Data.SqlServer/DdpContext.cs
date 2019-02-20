@@ -6,5 +6,7 @@ namespace Ddp.Data.Ef
     public class DdpContext : DbContext
     {
         public DbSet<EventTable> EventTables { get; set; }
+        public DbSet<EntityTypeTable> EntityTypeTables { get; set; }
+
     }
 }

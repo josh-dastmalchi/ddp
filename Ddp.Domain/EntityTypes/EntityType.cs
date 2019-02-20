@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Ddp.Domain.Events;
 
 namespace Ddp.Domain.EntityTypes
@@ -10,6 +11,8 @@ namespace Ddp.Domain.EntityTypes
             EntityTypeId = entityTypeId;
             Name = name;
         }
+
+        public EntityType(IEnumerable<IDomainEvent> eventStream, int streamVersion) : base(eventStream, streamVersion) { }
 
         public Guid EntityTypeId { get; set; }
         public string Name { get; set; }

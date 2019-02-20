@@ -24,7 +24,7 @@ namespace Ddp.Domain
 
         readonly List<IDomainEvent> _mutatingEvents;
 
-        protected int UnmutatedVersion { get; }
+        public int UnmutatedVersion { get; }
 
         public IEnumerable<IDomainEvent> GetPendingEvents()
         {

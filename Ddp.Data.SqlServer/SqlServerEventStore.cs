@@ -11,36 +11,41 @@ namespace Ddp.Data.Ef
 {
     public class SqlServerEventStore : IEventStore
     {
-        private readonly IContextProvider _contextProvider;
+        private readonly IDdpContextProvider _ddpContextProvider;
 
-        public SqlServerEventStore(IContextProvider contextProvider)
+        public SqlServerEventStore(IDdpContextProvider ddpContextProvider)
         {
-            _contextProvider = contextProvider;
+            _ddpContextProvider = ddpContextProvider;
         }
 
-        public async Task<List<IDomainEvent>> GetEventsFor<T>(Guid entityId, int? version = null)
-        {
-            return await GetEventsForInternal<T>(entityId.ToString(), version);
-        }
-
-        public async Task<List<IDomainEvent>> GetEventsFor<T>(int entityId, int? version = null)
+        public async Task<EventStream> GetEventStreamFor<T>(Guid entityId, int? version = null)
+            where T : EventSourcedEntity
         {
             return await GetEventsForInternal<T>(entityId.ToString(), version);
         }
 
-        public async Task<List<IDomainEvent>> GetEventsFor<T>(string entityId, int? version = null)
+        public async Task<EventStream> GetEventStreamFor<T>(int entityId, int? version = null)
+            where T : EventSourcedEntity
+        {
+            return await GetEventsForInternal<T>(entityId.ToString(), version);
+        }
+
+        public async Task<EventStream> GetEventStreamFor<T>(string entityId, int? version = null)
+            where T : EventSourcedEntity
         {
             return await GetEventsForInternal<T>(entityId, version);
         }
 
-        private async Task<List<IDomainEvent>> GetEventsForInternal<T>(string entityId, int? version = null)
+        private async Task<EventStream> GetEventsForInternal<T>(string entityId, int? version = null)
+            where T : EventSourcedEntity
         {
             var entityType = EventStoreMapping.GetEntityName<T>();
             if (entityType == null)
             {
                 throw new Exception("entity not found");
             }
-            var context = await _contextProvider.Get();
+
+            var context = await _ddpContextProvider.Get();
             var query = context.EventTables.Where(x => x.EntityType == entityType && x.EntityId == entityId);
             if (version.HasValue)
             {
@@ -58,29 +63,33 @@ namespace Ddp.Data.Ef
                     throw new Exception("unknown event type");
                 }
 
-                var materialized = (IDomainEvent)JsonConvert.DeserializeObject(eventTable.EventData, eventType);
+                var materialized = (IDomainEvent) JsonConvert.DeserializeObject(eventTable.EventData, eventType);
                 allEvents.Add(materialized);
             }
 
-            return allEvents;
+            return new EventStream(allEvents, eventTables.Max(x => x.Version));
         }
 
         public async Task StoreEventsFor<T>(Guid entityId, int baseVersion, IEnumerable<IDomainEvent> domainEvents)
+            where T : EventSourcedEntity
         {
             await StoreEventsForInternal<T>(entityId.ToString(), baseVersion, domainEvents);
         }
 
         public async Task StoreEventsFor<T>(int entityId, int baseVersion, IEnumerable<IDomainEvent> domainEvents)
+            where T : EventSourcedEntity
         {
             await StoreEventsForInternal<T>(entityId.ToString(), baseVersion, domainEvents);
         }
 
         public async Task StoreEventsFor<T>(string entityId, int baseVersion, IEnumerable<IDomainEvent> domainEvents)
+            where T : EventSourcedEntity
         {
             await StoreEventsForInternal<T>(entityId, baseVersion, domainEvents);
         }
 
-        private async Task StoreEventsForInternal<T>(string entityId, int baseVersion, IEnumerable<IDomainEvent> domainEvents)
+        private async Task StoreEventsForInternal<T>(string entityId, int baseVersion,
+            IEnumerable<IDomainEvent> domainEvents) where T : EventSourcedEntity
         {
             var entityType = EventStoreMapping.GetEntityName<T>();
             if (entityType == null)
@@ -88,7 +97,7 @@ namespace Ddp.Data.Ef
                 throw new Exception("Unknown entity");
             }
 
-            var context = await _contextProvider.Get();
+            var context = await _ddpContextProvider.Get();
 
             // Verify concurrency - for now just throw on breaking
             var latestEvent = await context.EventTables.Where(x => x.EntityType == entityType && x.EntityId == entityId)
@@ -106,6 +115,7 @@ namespace Ddp.Data.Ef
                 {
                     throw new Exception("Unknown event");
                 }
+
                 var eventData = await SerializeEventData(domainEvent);
                 var eventTable = new EventTable
                 {
@@ -122,6 +132,7 @@ namespace Ddp.Data.Ef
             }
         }
 
+        // TODO: Move to injected service?
         private Task<string> SerializeEventData(object obj)
         {
             return Task.FromResult(JsonConvert.SerializeObject(obj));

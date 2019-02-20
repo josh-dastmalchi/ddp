@@ -7,7 +7,7 @@ namespace Ddp.Domain.Repositories
     public interface IEntityTypeRepository
     {
         Task<EntityType> Get(Guid entityTypeId);
-        Task<EntityType> Create(EntityType entityType);
-        Task<EntityType> Update(EntityType entityType);
+        Task Create(EntityType entityType);
+        Task Update(EntityType entityType);
     }
 }
