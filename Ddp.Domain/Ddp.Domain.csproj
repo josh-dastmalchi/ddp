@@ -5,6 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Domains\Services\" />
+    <Folder Include="NaturalLanguageModel\" />
     <Folder Include="Properties\" />
   </ItemGroup>
 

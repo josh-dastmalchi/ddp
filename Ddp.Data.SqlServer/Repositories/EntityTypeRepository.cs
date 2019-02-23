@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Ddp.Data.Ef.Tables;
-using Ddp.Domain.EntityTypes;
-using Ddp.Domain.Repositories;
+using Ddp.Domain.EntityRelationshipModel.EntityTypes;
+using Ddp.Domain.EntityRelationshipModel.Repositories;
 
 namespace Ddp.Data.Ef.Repositories
 {

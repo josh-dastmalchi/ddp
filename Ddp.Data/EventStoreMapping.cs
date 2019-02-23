@@ -1,8 +1,8 @@
-﻿using Ddp.Domain.EntityTypes;
-using Ddp.Domain.Events;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Ddp.Domain;
+using Ddp.Domain.EntityRelationshipModel.EntityTypes;
+using Ddp.Domain.EntityRelationshipModel.Events;
 
 namespace Ddp.Data
 {

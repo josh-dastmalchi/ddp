@@ -1,5 +1,5 @@
 ﻿using System;
-using Ddp.Domain.EntityTypes;
+using Ddp.Domain.EntityRelationshipModel.EntityTypes;
 
 namespace Testapp
 {
