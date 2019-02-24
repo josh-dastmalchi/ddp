@@ -2,16 +2,16 @@
 
 namespace Ddp.Domain.ConceptualModel.Events
 {
-    public class ConceptCreatedEvent : IDomainEvent
+    public class ConceptRenamedEvent : IDomainEvent
     {
-        public ConceptCreatedEvent(Guid topLevelNounId, string name, Guid eventId)
+        public ConceptRenamedEvent(Guid conceptId, string name, Guid eventId)
         {
-            TopLevelNounId = topLevelNounId;
+            ConceptId = conceptId;
             Name = name;
             EventId = eventId;
         }
 
-        public Guid TopLevelNounId { get; }
+        public Guid ConceptId { get; }
         public string Name { get; }
         public Guid EventId { get; }
     }

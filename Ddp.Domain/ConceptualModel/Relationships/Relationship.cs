@@ -2,18 +2,18 @@
 
 namespace Ddp.Domain.ConceptualModel.Relationships
 {
-    public class Relationship
+    public class Relationship : EventSourcedEntity
     {
-        public Guid RelationshipId { get; set; }
-        public Guid LeftSideConceptId { get; set; }
-        public Guid RightSideConceptId { get; set; }
+        public Relationship(Guid relationshipId, RelationshipRole left, RelationshipRole right, string name,
+            string description)
+        {
 
-        public int? LeftSideMinimumCardinality { get; set; }
-        public int? LeftSideMaximumCardinality { get; set; }
+        }
+        public Guid RelationshipId { get; private set; }
+        public RelationshipRole Left { get; private set; }
 
-        public int? RightSideMinimumCardinality { get; set; }
-        public int? RightSideMaximumCardinality { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
+        public RelationshipRole Right { get; private set; }
+        public string Name { get; private set; }
+        public string Description { get; private set; }
     }
 }
