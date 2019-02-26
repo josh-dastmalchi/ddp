@@ -9,24 +9,35 @@ namespace Ddp.Domain.ConceptualModel.Concepts
         {
             Apply(new ConceptAttributeAddedEvent(conceptAttributeId, conceptId, name, GuidComb.Generate()));
         }
+
         public Guid ConceptAttributeId { get; private set; }
         public Guid ConceptId { get; private set; }
         public string Name { get; private set; }
+        public bool IsRequired { get; private set; }
         public bool IsActive { get; private set; }
 
         public void Rename(string newName)
         {
-            if (Name != newName)
-            {
-                Apply(new ConceptAttributeRenamedEvent(ConceptAttributeId, newName, GuidComb.Generate()));
-            }
+            Apply(new ConceptAttributeRenamedEvent(ConceptAttributeId, newName, GuidComb.Generate()));
         }
+
+        public void MakeRequired()
+        {
+            Apply(new ConceptAttributeMadeRequiredEvent(ConceptAttributeId, GuidComb.Generate()));
+        }
+
+        public void MakeNotRequired()
+        {
+            Apply(new ConceptAttributeMadeNotRequiredEvent(ConceptAttributeId, GuidComb.Generate()));
+        }
+
         protected void When(ConceptAttributeAddedEvent @event)
         {
             ConceptAttributeId = @event.ConceptAttributeId;
             ConceptId = @event.ConceptId;
             Name = @event.Name;
             IsActive = true;
+            IsRequired = false;
         }
 
         protected void When(ConceptAttributeRemovedEvent @event)
@@ -37,6 +48,16 @@ namespace Ddp.Domain.ConceptualModel.Concepts
         protected void When(ConceptAttributeRenamedEvent @event)
         {
             Name = @event.Name;
+        }
+
+        protected void When(ConceptAttributeMadeRequiredEvent @event)
+        {
+            IsRequired = true;
+        }
+
+        protected void When(ConceptAttributeMadeNotRequiredEvent @event)
+        {
+            IsRequired = false;
         }
     }
 }

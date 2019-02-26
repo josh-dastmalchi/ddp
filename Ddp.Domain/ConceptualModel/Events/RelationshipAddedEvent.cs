@@ -1,18 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Ddp.Domain.ConceptualModel.Events
 {
     public class RelationshipAddedEvent : IDomainEvent
     {
-        public RelationshipAddedEvent(Guid relationshipId, Guid eventId)
+        public RelationshipAddedEvent(Guid relationshipId, string name, Guid leftSideConceptId, Guid rightSideConceptId, Guid eventId)
         {
             RelationshipId = relationshipId;
+            Name = name;
+            LeftSideConceptId = leftSideConceptId;
+            RightSideConceptId = rightSideConceptId;
             EventId = eventId;
         }
 
         public Guid RelationshipId { get; }
+        public string Name { get; }
+        public Guid LeftSideConceptId { get; }
+        public Guid RightSideConceptId { get; }
         public Guid EventId { get; }
     }
 }
