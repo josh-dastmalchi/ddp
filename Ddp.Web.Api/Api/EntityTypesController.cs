@@ -6,5 +6,11 @@ namespace Ddp.Web.Api.Api
     [ApiController]
     public class EntityTypesController : ControllerBase
     {
+        [Route("")]
+        public IActionResult Hmm()
+        {
+            return Ok("hurray");
+        }
+
     }
 }

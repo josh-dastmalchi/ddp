@@ -1,11 +1,14 @@
-﻿using System.Reflection;
-using Ddp.Data.Ef.Tables;
+﻿using Ddp.Data.Ef.Tables;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ddp.Data.Ef
 {
     public class DdpContext : DbContext
     {
+        public DdpContext(DbContextOptions<DdpContext> options) : base(options)
+        {
+
+        }
         public DbSet<EventTable> EventTables { get; set; }
         public DbSet<EntityTypeTable> EntityTypeTables { get; set; }
         public DbSet<ConceptTable> ConceptTables { get; set; }

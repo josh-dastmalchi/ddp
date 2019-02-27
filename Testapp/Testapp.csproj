@@ -6,8 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Ddp.Data.SqlServer\Ddp.Data.Ef.csproj" />
-    <ProjectReference Include="..\Ddp.Domain\Ddp.Domain.csproj" />
+    <ProjectReference Include="..\Ddp.Data.Ef\Ddp.Data.Ef.csproj" />
   </ItemGroup>
 
 </Project>
