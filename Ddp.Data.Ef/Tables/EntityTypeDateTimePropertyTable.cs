@@ -6,7 +6,10 @@ namespace Ddp.Data.Ef.Tables
     {
         public Guid EntityTypeDateTimePropertyId { get; set; }
         public Guid EntityTypeId { get; set; }
-        public DateTime DateTimeProperty { get; set; }
+        public string Name { get; set; }
+        public DateTimeOffset? MinimumValue { get; set; }
+        public DateTimeOffset? MaximumValue { get; set; }
+        public bool IsRequired { get; set; }
         public int? MaximumAllowed { get; set; }
     }
 }
