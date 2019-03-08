@@ -1,6 +1,7 @@
 ﻿using System;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Ddp.Application.Autofac;
 using Ddp.Data.Ef;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -32,7 +33,8 @@ namespace Ddp.Web.Api
             var builder = new ContainerBuilder();
 
             builder.Populate(services);
-            // TODO: register stuff here
+            builder.RegisterModule<DdpApplicationAutofacModule>();
+            builder.RegisterType<DdpContextProvider>().As<IDdpContextProvider>().InstancePerLifetimeScope();
             var container = builder.Build();
             return new AutofacServiceProvider(container);
         }

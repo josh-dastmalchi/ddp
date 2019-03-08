@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Autofac" Version="4.9.1" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.4.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
@@ -18,8 +19,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Ddp.Application\Ddp.Application.csproj" />
     <ProjectReference Include="..\Ddp.Data.Ef\Ddp.Data.Ef.csproj" />
     <ProjectReference Include="..\Ddp.Data\Ddp.Data.csproj" />
+    <ProjectReference Include="..\Ddp.Domain\Ddp.Domain.csproj" />
   </ItemGroup>
 
 </Project>

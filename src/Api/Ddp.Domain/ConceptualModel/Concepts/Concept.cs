@@ -18,8 +18,12 @@ namespace Ddp.Domain.ConceptualModel.Concepts
         public Guid ConceptId { get; private set; }
         public string Name { get; private set; }
         public string Description { get; private set; }
-
         public bool IsActive { get; private set; }
+
+        public void Rename(string newName)
+        {
+            Apply(new ConceptRenamedEvent(ConceptId, newName, GuidComb.Generate()));
+        }
 
         protected void When(ConceptAddedEvent @event)
         {

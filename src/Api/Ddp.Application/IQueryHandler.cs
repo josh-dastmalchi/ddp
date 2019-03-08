@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Ddp.Application
 {
-    public interface IQueryHandler<TQuery, TResult> where TQuery : IQuery
+    public interface IQueryHandler<in TQuery, TResult> where TQuery : IQuery
     {
         Task<TResult> Handle(TQuery query, CancellationToken cancellationToken = default(CancellationToken));
     }
