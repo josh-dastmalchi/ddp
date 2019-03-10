@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 
-namespace Ddp.Application
+namespace Ddp.ReadModels
 {
     public interface IQueryHandler<in TQuery, TResult> where TQuery : IQuery
     {

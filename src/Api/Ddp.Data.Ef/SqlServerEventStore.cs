@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Ddp.Data.Ef.Tables;
 using Ddp.Domain;
@@ -18,31 +19,35 @@ namespace Ddp.Data.Ef
             _ddpContextProvider = ddpContextProvider;
         }
 
-        public async Task<EventStream> GetEventStreamFor<T>(Guid entityId, int? version = null)
+        public async Task<EventStream> GetEventStreamFor<T>(Guid entityId, int? version = null,
+            CancellationToken cancellationToken = default(CancellationToken))
             where T : EventSourcedEntity
         {
-            return await GetEventsForInternal<T>(entityId.ToString(), version);
+            return await GetEventsForInternal<T>(entityId.ToString(), version, cancellationToken);
         }
 
-        public async Task<EventStream> GetEventStreamFor<T>(int entityId, int? version = null)
+        public async Task<EventStream> GetEventStreamFor<T>(int entityId, int? version = null,
+            CancellationToken cancellationToken = default(CancellationToken))
             where T : EventSourcedEntity
         {
-            return await GetEventsForInternal<T>(entityId.ToString(), version);
+            return await GetEventsForInternal<T>(entityId.ToString(), version, cancellationToken);
         }
 
-        public async Task<EventStream> GetEventStreamFor<T>(string entityId, int? version = null)
+        public async Task<EventStream> GetEventStreamFor<T>(string entityId, int? version = null,
+            CancellationToken cancellationToken = default(CancellationToken))
             where T : EventSourcedEntity
         {
-            return await GetEventsForInternal<T>(entityId, version);
+            return await GetEventsForInternal<T>(entityId, version, cancellationToken);
         }
 
-        private async Task<EventStream> GetEventsForInternal<T>(string entityId, int? version = null)
+        private async Task<EventStream> GetEventsForInternal<T>(string entityId, int? version = null,
+            CancellationToken cancellationToken = default(CancellationToken))
             where T : EventSourcedEntity
         {
             var entityType = EventStoreMapping.GetEntityName<T>();
             if (entityType == null)
             {
-                throw new Exception("entity not found");
+                throw new Exception($"Unable to find event store mapping for entity type {typeof(T)}. Did you forget to add an entity binding to the event store mapping?");
             }
 
             var context = await _ddpContextProvider.Get();
@@ -60,36 +65,39 @@ namespace Ddp.Data.Ef
                 var eventType = EventStoreMapping.GetEventType(eventTable.EventType);
                 if (eventType == null)
                 {
-                    throw new Exception("unknown event type");
+                    throw new Exception($"Unable to find event store mapping for event {eventTable.EventType}. Did you forget to add an event binding to the event store mapping?");
                 }
 
-                var materialized = (IDomainEvent) JsonConvert.DeserializeObject(eventTable.EventData, eventType);
+                var materialized = (IDomainEvent)JsonConvert.DeserializeObject(eventTable.EventData, eventType);
                 allEvents.Add(materialized);
             }
 
             return new EventStream(allEvents, eventTables.Max(x => x.Version));
         }
 
-        public async Task StoreEventsFor<T>(Guid entityId, int baseVersion, IEnumerable<IDomainEvent> domainEvents)
+        public async Task StoreEventsFor<T>(T entity, Guid entityId,
+            CancellationToken cancellationToken = default(CancellationToken))
             where T : EventSourcedEntity
         {
-            await StoreEventsForInternal<T>(entityId.ToString(), baseVersion, domainEvents);
+            await StoreEventsForInternal(entity, entityId.ToString(), cancellationToken);
         }
 
-        public async Task StoreEventsFor<T>(int entityId, int baseVersion, IEnumerable<IDomainEvent> domainEvents)
+        public async Task StoreEventsFor<T>(T entity, int entityId,
+            CancellationToken cancellationToken = default(CancellationToken))
             where T : EventSourcedEntity
         {
-            await StoreEventsForInternal<T>(entityId.ToString(), baseVersion, domainEvents);
+            await StoreEventsForInternal(entity, entityId.ToString(), cancellationToken);
         }
 
-        public async Task StoreEventsFor<T>(string entityId, int baseVersion, IEnumerable<IDomainEvent> domainEvents)
+        public async Task StoreEventsFor<T>(T entity, string entityId,
+            CancellationToken cancellationToken = default(CancellationToken))
             where T : EventSourcedEntity
         {
-            await StoreEventsForInternal<T>(entityId, baseVersion, domainEvents);
+            await StoreEventsForInternal(entity, entityId, cancellationToken);
         }
 
-        private async Task StoreEventsForInternal<T>(string entityId, int baseVersion,
-            IEnumerable<IDomainEvent> domainEvents) where T : EventSourcedEntity
+        private async Task StoreEventsForInternal<T>(T entity, string entityId,
+            CancellationToken cancellationToken = default(CancellationToken)) where T : EventSourcedEntity
         {
             var entityType = EventStoreMapping.GetEntityName<T>();
             if (entityType == null)
@@ -102,12 +110,13 @@ namespace Ddp.Data.Ef
             // Verify concurrency - for now just throw on breaking
             var latestEvent = await context.EventTables.Where(x => x.EntityType == entityType && x.EntityId == entityId)
                 .OrderByDescending(x => x.Version).Select(x => x.Version).FirstOrDefaultAsync();
-            if (baseVersion > latestEvent)
+            if (entity.UnmutatedVersion > latestEvent)
             {
                 throw new Exception("Tried to save an entity but someone else got here first.");
             }
 
             var next = 1;
+            var domainEvents = entity.GetMutatingEvents();
             foreach (var domainEvent in domainEvents)
             {
                 var eventType = EventStoreMapping.GetEventName(domainEvent.GetType());
@@ -122,7 +131,7 @@ namespace Ddp.Data.Ef
                     EventId = domainEvent.EventId,
                     EntityType = entityType,
                     EntityId = entityId,
-                    Version = baseVersion + next,
+                    Version = entity.UnmutatedVersion + next,
                     EventData = eventData,
                     EventType = eventType
                 };
@@ -130,6 +139,9 @@ namespace Ddp.Data.Ef
                 context.EventTables.Add(eventTable);
                 next++;
             }
+
+            await context.SaveChangesAsync(cancellationToken);
+
         }
 
         // TODO: Move to injected service?

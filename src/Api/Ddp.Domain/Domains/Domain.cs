@@ -7,7 +7,7 @@ namespace Ddp.Domain.Domains
     {
         public Domain(Guid domainId, string name)
         {
-            Apply(new DomainCreatedEvent(domainId, name, GuidComb.Generate()));
+            Apply(new DomainAddedEvent(domainId, name, GuidComb.Generate()));
 
         }
 
@@ -21,7 +21,7 @@ namespace Ddp.Domain.Domains
                 Apply(new DomainRenamedEvent(DomainId, newName, GuidComb.Generate()));
             }
         }
-        protected void When(DomainCreatedEvent @event)
+        protected void When(DomainAddedEvent @event)
         {
             DomainId = @event.DomainId;
             Name = @event.Name;

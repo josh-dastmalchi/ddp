@@ -1,15 +1,14 @@
 ﻿using Autofac;
 
-namespace Ddp.Application.Autofac
+namespace Ddp.ReadModels.Autofac
 {
-    public class DdpApplicationAutofacModule : Module
+    public class DdpReadModelAutofacModule : Module
     {
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterAssemblyTypes(GetType().Assembly)
-                .AsClosedTypesOf(typeof(ICommandHandler<>))
+                .AsClosedTypesOf(typeof(IQueryHandler<,>))
                 .AsImplementedInterfaces();
-
         }
     }
 }

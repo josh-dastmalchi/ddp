@@ -23,6 +23,7 @@
     <ProjectReference Include="..\Ddp.Data.Ef\Ddp.Data.Ef.csproj" />
     <ProjectReference Include="..\Ddp.Data\Ddp.Data.csproj" />
     <ProjectReference Include="..\Ddp.Domain\Ddp.Domain.csproj" />
+    <ProjectReference Include="..\Ddp.ReadModels\Ddp.ReadModels.csproj" />
   </ItemGroup>
 
 </Project>

@@ -4,13 +4,15 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Ddp.Data.Ef.Mappings
 {
-    public class ConceptEntityTypeConfiguration : IEntityTypeConfiguration<ConceptTable>
+    public class ConceptTableEntityTypeConfiguration : IEntityTypeConfiguration<ConceptTable>
     {
         public void Configure(EntityTypeBuilder<ConceptTable> builder)
         {
+            builder.ToTable("Concepts");
             builder.HasKey(x => x.ConceptId);
             builder.HasMany<ConceptAttributeTable>().WithOne().HasForeignKey(x => x.ConceptId).HasPrincipalKey(x=>x.ConceptId);
-            builder.Property(x => x.Name);
+            builder.HasOne<DomainTable>().WithMany().HasForeignKey(x=>x.DomainId).HasPrincipalKey(x=>x.DomainId);
+            builder.Property(x => x.Name).IsRequired();
             builder.Property(x => x.Description);
         }
     }

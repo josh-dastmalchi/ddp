@@ -1,11 +1,10 @@
 ﻿using System;
 
-namespace Ddp.Data.Ef.Tables
+namespace Ddp.ReadModels.ConceptualModel
 {
-    public class ConceptTable
+    public class GetConceptsForDomainReadModelConcept
     {
         public Guid ConceptId { get; set; }
-        public Guid DomainId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
     }

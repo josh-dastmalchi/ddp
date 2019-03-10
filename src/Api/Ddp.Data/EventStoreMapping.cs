@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Ddp.Domain;
+using Ddp.Domain.ConceptualModel.Concepts;
+using Ddp.Domain.ConceptualModel.Events;
+using Ddp.Domain.Domains.Events;
 using Ddp.Domain.EntityRelationshipModel.EntityTypes;
 using Ddp.Domain.EntityRelationshipModel.Events;
 
@@ -23,6 +26,24 @@ namespace Ddp.Data
             EventNameMappings = new Dictionary<string, Type>();
 
             AddEntity<EntityType>("EntityType");
+            AddEntity<Concept>("Concept");
+            AddEntity<Domain.Domains.Domain>("Domain");
+            AddEntity<ConceptAttribute>("ConceptAttribute");
+
+            AddEvent<DomainAddedEvent>("DomainCreatedEvent");
+            AddEvent<DomainRenamedEvent>("DomainRenamedEvent");
+
+            AddEvent<ConceptAddedEvent>("ConceptAddedEvent");
+            AddEvent<ConceptRenamedEvent>("ConceptRenamedEvent");
+            AddEvent<ConceptDescriptionChangedEvent>("ConceptDescriptionChangedEvent");
+            AddEvent<ConceptRemovedEvent>("ConceptRemovedEvent");
+
+            AddEvent<ConceptAttributeAddedEvent>("ConceptAttributeAddedEvent");
+            AddEvent<ConceptAttributeMadeNotRequiredEvent>("ConceptAttributeMadeNotRequiredEvent");
+            AddEvent<ConceptAttributeMadeRequiredEvent>("ConceptAttributeMadeRequiredEvent");
+            AddEvent<ConceptAttributeRemovedEvent>("ConceptAttributeRemovedEvent");
+            AddEvent<ConceptAttributeRenamedEvent>("ConceptAttributeRenamedEvent");
+
             AddEvent<EntityTypeRenamedEvent>("EntityTypeRenamedEvent");
         }
 

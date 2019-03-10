@@ -1,4 +1,4 @@
-﻿namespace Ddp.Application
+﻿namespace Ddp.ReadModels
 {
     public interface IQuery
     {

@@ -6,14 +6,12 @@ namespace Ddp.Domain.ConceptualModel.Concepts
 {
     public class Concept : EventSourcedEntity
     {
-        public Concept(Guid conceptId, string name, string description)
+        public Concept(Guid conceptId, Guid domainId,  string name, string description)
         {
-            Apply(new ConceptAddedEvent(conceptId, name, description, GuidComb.Generate()));
+            Apply(new ConceptAddedEvent(conceptId, domainId, name, description, GuidComb.Generate()));
         }
 
-        public Concept(IEnumerable<IDomainEvent> eventStream, int streamVersion) : base(eventStream, streamVersion)
-        {
-        }
+        public Concept(IEnumerable<IDomainEvent> eventStream, int steamVersion) : base(eventStream, steamVersion) { }
 
         public Guid ConceptId { get; private set; }
         public string Name { get; private set; }

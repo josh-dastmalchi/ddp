@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="4.9.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Ddp.Data.Ef\Ddp.Data.Ef.csproj" />
+    <ProjectReference Include="..\Ddp.Data\Ddp.Data.csproj" />
+    <ProjectReference Include="..\Ddp.Domain\Ddp.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

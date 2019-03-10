@@ -3,6 +3,9 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Ddp.Application.Autofac;
 using Ddp.Data.Ef;
+using Ddp.Data.Ef.Autofac;
+using Ddp.Domain.Autofac;
+using Ddp.ReadModels.Autofac;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -24,17 +27,20 @@ namespace Ddp.Web.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+            var ddpConnectionString = Configuration.GetConnectionString("Ddp");
             services.AddEntityFrameworkSqlServer()
                 .AddDbContext<DdpContext>(options =>
-                    options.UseSqlServer("database=localhost; initial catalog=ddp; user=ddp=password=ddp", sqlServerOptionsAction => sqlServerOptionsAction.MigrationsAssembly(typeof(DdpContext).Assembly.FullName)));
+                    options.UseSqlServer(ddpConnectionString, sqlServerOptionsAction => sqlServerOptionsAction.MigrationsAssembly(typeof(DdpContext).Assembly.FullName)));
 
             var builder = new ContainerBuilder();
 
             builder.Populate(services);
+            builder.RegisterModule<DdpDataEfAutofacModule>();
+            builder.RegisterModule<DdpDomainAutofacModule>();
             builder.RegisterModule<DdpApplicationAutofacModule>();
-            builder.RegisterType<DdpContextProvider>().As<IDdpContextProvider>().InstancePerLifetimeScope();
+            builder.RegisterModule<DdpReadModelAutofacModule>();
             var container = builder.Build();
             return new AutofacServiceProvider(container);
         }

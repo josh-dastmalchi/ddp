@@ -2,11 +2,9 @@
 
 namespace Ddp.Data.Ef.Tables
 {
-    public class ConceptTable
+    public class DomainTable
     {
-        public Guid ConceptId { get; set; }
         public Guid DomainId { get; set; }
         public string Name { get; set; }
-        public string Description { get; set; }
     }
 }

@@ -44,7 +44,7 @@ namespace Ddp.Data.Ef.Repositories
 
             await context.EntityTypeTables.AddAsync(entityTypeTable);
 
-            await _eventStore.StoreEventsFor<EntityType>(entityType.EntityTypeId, entityType.UnmutatedVersion, entityType.GetPendingEvents());
+            await _eventStore.StoreEventsFor(entityType,entityType.EntityTypeId);
         }
 
         public async Task Update(EntityType entityType)
@@ -58,8 +58,7 @@ namespace Ddp.Data.Ef.Repositories
                 throw new Exception("nope doesn't exist");
             }
 
-            await _eventStore.StoreEventsFor<EntityType>(entityType.EntityTypeId, entityType.UnmutatedVersion,
-                entityType.GetPendingEvents());
+            await _eventStore.StoreEventsFor(entityType,entityType.EntityTypeId);
         }
     }
 }

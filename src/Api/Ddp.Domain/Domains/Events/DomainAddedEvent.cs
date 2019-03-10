@@ -2,9 +2,9 @@
 
 namespace Ddp.Domain.Domains.Events
 {
-    public class DomainCreatedEvent : IDomainEvent
+    public class DomainAddedEvent : IDomainEvent
     {
-        public DomainCreatedEvent(Guid domainId, string name, Guid eventId)
+        public DomainAddedEvent(Guid domainId, string name, Guid eventId)
         {
             DomainId = domainId;
             Name = name;

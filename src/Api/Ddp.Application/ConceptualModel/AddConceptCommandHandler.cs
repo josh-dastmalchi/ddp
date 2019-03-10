@@ -16,7 +16,7 @@ namespace Ddp.Application.ConceptualModel
 
         protected override async Task HandleTransacted(AddConceptCommand command, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var concept = new Concept(command.ConceptId, command.Name, command.Description);
+            var concept = new Concept(command.ConceptId, command.DomainId, command.Name, command.Description);
             await _conceptRepository.Create(concept, cancellationToken);
         }
     }
