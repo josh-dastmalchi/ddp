@@ -34,6 +34,13 @@ namespace Ddp.Web.Api
                 .AddDbContext<DdpContext>(options =>
                     options.UseSqlServer(ddpConnectionString, sqlServerOptionsAction => sqlServerOptionsAction.MigrationsAssembly(typeof(DdpContext).Assembly.FullName)));
 
+            services.AddCors(corsOptions => corsOptions
+                .AddDefaultPolicy(corsPolicyBuilder => corsPolicyBuilder
+                    .WithOrigins("http://localhost:8080")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials()
+                ));
             var builder = new ContainerBuilder();
 
             builder.Populate(services);
@@ -51,6 +58,7 @@ namespace Ddp.Web.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseCors();
             app.UseMvc();
             app.UseStaticFiles();
             

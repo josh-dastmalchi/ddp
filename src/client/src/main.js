@@ -5,6 +5,7 @@ import resource from 'vue-resource'
 import store from './store'
 import Vuetify from 'vuetify'
 
+
 Vue.config.productionTip = false
 
 Vue.use(Vuetify, {
