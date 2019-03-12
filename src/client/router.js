@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Sandbox from './views/Sandbox.vue'
+import NavDrawer from './views/NavDrawer.vue'
+import Toolbar from './views/Toolbar.vue'
 Vue.use(VueRouter)
 
 export default new VueRouter({
@@ -10,7 +12,11 @@ export default new VueRouter({
     {
       path: '/',
       name: 'Sandbox',
-      component: Sandbox
+      components: {
+        default: Sandbox,
+        navdrawer: NavDrawer,
+        toolbar: Toolbar
+      }
     }
   ]
 })
