@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Ddp.Domain.Domains.Events;
 
 namespace Ddp.Domain.Domains
@@ -8,9 +9,9 @@ namespace Ddp.Domain.Domains
         public Domain(Guid domainId, string name)
         {
             Apply(new DomainAddedEvent(domainId, name, GuidComb.Generate()));
-
         }
 
+        public Domain(IEnumerable<IDomainEvent> eventStream, int streamVersion) : base(eventStream, streamVersion) {  }
         public Guid DomainId { get; private set; }
         public string Name { get; private set; }
 

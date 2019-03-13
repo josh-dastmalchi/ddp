@@ -6,7 +6,9 @@ namespace Ddp.Domain.Domains.Repositories
 {
     public interface IDomainRepository
     {
-        Task Create(Domain domain, CancellationToken cancellationToken);
+        Task<Domain> Get(Guid domainId, CancellationToken cancellationToken = default(CancellationToken));
+        Task<Domain> GetByName(string name, CancellationToken cancellationToken = default(CancellationToken));
+        Task Create(Domain domain, CancellationToken cancellationToken = default(CancellationToken));
         
     }
 }

@@ -5,6 +5,7 @@ using Ddp.Data.Ef.Tables;
 using Ddp.Domain;
 using Ddp.Domain.ConceptualModel.Concepts;
 using Ddp.Domain.ConceptualModel.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace Ddp.Data.Ef.Repositories
 {
@@ -35,6 +36,22 @@ namespace Ddp.Data.Ef.Repositories
             }
 
             var stream = await _eventStore.GetEventStreamFor<Concept>(conceptId, cancellationToken: cancellationToken);
+
+            var concept = new Concept(stream.DomainEvents, stream.StreamVersion);
+
+            return concept;
+        }
+
+        public async Task<Concept> GetByName(string name, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var context = await _ddpContextProvider.Get();
+            var conceptTable = await context.ConceptTables.SingleOrDefaultAsync(c => c.Name == name, cancellationToken);
+            if (conceptTable == null)
+            {
+                return null;
+            }
+
+            var stream = await _eventStore.GetEventStreamFor<Concept>(conceptTable.ConceptId, cancellationToken: cancellationToken);
 
             var concept = new Concept(stream.DomainEvents, stream.StreamVersion);
 

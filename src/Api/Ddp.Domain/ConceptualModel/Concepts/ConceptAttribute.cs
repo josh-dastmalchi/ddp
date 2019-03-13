@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Ddp.Domain.ConceptualModel.Events;
 
 namespace Ddp.Domain.ConceptualModel.Concepts
@@ -10,6 +11,7 @@ namespace Ddp.Domain.ConceptualModel.Concepts
             Apply(new ConceptAttributeAddedEvent(conceptAttributeId, conceptId, name, GuidComb.Generate()));
         }
 
+        public ConceptAttribute(IEnumerable<IDomainEvent> eventStream, int streamVersion)  :base(eventStream, streamVersion) {  }
         public Guid ConceptAttributeId { get; private set; }
         public Guid ConceptId { get; private set; }
         public string Name { get; private set; }
